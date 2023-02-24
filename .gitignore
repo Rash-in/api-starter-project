@@ -1,3 +1,10 @@
+# Certificate, log, and dotenv files
+*.crt
+*.pem
+*.key
+*.log
+*.env
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
