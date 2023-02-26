@@ -1,4 +1,4 @@
-# api-starter
+# api-starter (NOT YET FUNCTIONING OR TO BE USED FOR PRODUCTION LEVEL DEPLOY)
 
 
 pip install pipdeptree colander fastapi gunicorn uvicorn loguru mysqlclient pytest setproctitle python-dotenv sqlalchemy
