@@ -15,3 +15,13 @@ ipdeptree colander fastapi gunicorn uvicorn loguru mysqlclient pytest setproctit
 requests poetry wheel setuptools
 
 poetry install
+
+setup runtime folder
+in terminal cd to where all repos are stored.
+`mkdir Runtime`
+`mkdir -p /path/to/Runtime/bin /path/to/Runtime/certs /path/to/Runtime/envs /path/to/Runtime/logs /path/to/Runtime/pids`
+`cd /path/to/Runtime/envs`
+`touch api-starter.env`
+
+`ln -s /path/to/api-starter-project /path/to/Runtime`
+
