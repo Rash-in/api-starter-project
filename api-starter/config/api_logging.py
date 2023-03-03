@@ -22,7 +22,7 @@ class InterceptHandler(logging.Handler):
 # ------------------------- Define Loguru Formatting ------------------------- #
 fmt = (
     "<green>[{time:YYYY-MM-DDTHH:mm:ssZ}]</green> | "
-    "<yellow>{extra[namespace]}: {extra[pod]}</yellow> | "
+    "<yellow>{extra[platform]}: {extra[instance]}</yellow> | "
     "<cyan>{level}      </cyan>"
     "<bold>{message}</bold>"
 )
@@ -35,12 +35,12 @@ def init_logging_local():
 
     logger.configure(
         extra={
-            "namespace":os.environ['K8S_POD_NAMESPACE'],
-            "pod":os.environ['K8S_POD_NAME']
+            "platform":os.environ['PLATFORM'],
+            "instance":os.environ['INSTANCE']
         },
         handlers=[
             {   # Remote logger (logs to file)
-                "sink": f"{os.environ['LOG_PATH']}/{os.environ['K8S_POD_NAME']}.log", 
+                "sink": f"{os.environ['LOG_PATH']}/{os.environ['INSTANCE']}.log", 
                 "level": "TRACE",
                 "format":fmt,
                 "backtrace":False,
@@ -74,12 +74,12 @@ def init_logging_remote():
 
     logger.configure(
         extra={
-            "namespace":os.environ['K8S_POD_NAMESPACE'],
-            "pod":os.environ['K8S_POD_NAME']
+            "platform":os.environ['PLATFORM'],
+            "instance":os.environ['INSTANCE']
         },
         handlers=[
             {   # Remote logger (logs to file)
-                "sink": f"{os.environ['LOG_PATH']}/{os.environ['K8S_POD_NAME']}.log", 
+                "sink": f"{os.environ['LOG_PATH']}/{os.environ['INSTANCE']}.log", 
                 "level": "TRACE",
                 "format":fmt,
                 "backtrace":False,
