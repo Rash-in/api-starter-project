@@ -25,3 +25,14 @@ in terminal cd to where all repos are stored.
 
 `ln -s /path/to/api-starter-project /path/to/Runtime`
 
+in /path/to/Runtime/envs/api-starter.env
+```
+APP_PATH='/path/to/api-starter-project/api-starter'
+PLATFORM='dev-local'
+INSTANCE='venv'
+LOG_PATH='/path/to/api-starter-project/.env/Runtime/logs'
+SSL_CA_PATH='/path/to/api-starter-project/.env/Runtime/certs/rootCA.crt'
+SSL_CRT_PATH='/path/to/api-starter-project/.env/Runtime/certs/server.crt'
+SSL_KEY_PATH='/path/to/api-starter-project/.env/Runtime/certs/server.key'
+UVICORN_WORKERS='5'
+```
