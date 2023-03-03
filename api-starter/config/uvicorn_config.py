@@ -24,7 +24,7 @@ for bad_cipher in bad_ciphers:
     ssl_ciphers += f":!{bad_cipher}" 
 
 uvi_config = uvicorn.Config(
-    app= "main:tccapi",
+    app= "main:api_starter",
     host= "0.0.0.0",
     port= 4443,
     reload= False,

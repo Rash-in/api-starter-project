@@ -9,7 +9,7 @@ async def swagger_ui_html():
     return get_swagger_ui_html(
         openapi_url = "/openapi.json",
         swagger_favicon_url = "/favicon.ico",
-        title="TCC Tools API",
+        title="API-Starter",
         swagger_ui_parameters={
             "syntaxHighlight.theme":"obsidian",
             "docExpansion":"None",
