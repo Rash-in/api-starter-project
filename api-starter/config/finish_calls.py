@@ -8,7 +8,6 @@ class LogObj(colander.MappingSchema):
     log_obj_keys = colander.SchemaNode(colander.List(),validator=colander.ContainsOnly(
         [
             'request_url',
-            'bearer_msid',
             'isErr',
             'which_error',
             'func_location',
@@ -41,12 +40,11 @@ class FinishCall:
     def __init__(self, log_obj: dict):
         self.log_obj = log_obj
         # Self Defined
-        self.namespace = os.environ['K8S_POD_NAMESPACE']
-        self.pod = os.environ['K8S_POD_NAME']
+        self.platform = os.environ['PLATFORM']
+        self.instance = os.environ['INSTANCE']
         self.uuid = str(uuid.uuid4())
         # Provided
         self.request_url = log_obj['request_url'] or None
-        self.bearer_msid = log_obj['bearer_msid'] or None
         self.isErr = log_obj['isErr'] or None
         self.which_error = log_obj['which_error'] or None
         self.func_location = log_obj['func_location'] or None
@@ -141,7 +139,7 @@ class FinishCall:
         log_type = logger_code + "." + self.which_error
         try:
             #TODO: Replace this statement with splunk function defined in app_server_logging.py
-            logger.log(f"{logger_code}", f"\n  URL : {self.request_url}\n  UUID: {self.uuid}\n  USER: {self.bearer_msid}\n  Path: {self.func_location}\n  Func: {self.at_func}\n  API : {self.ext_api_name}\n  Type: {log_type}\n  Msg : {msg}\n  External API Code: {self.ext_api_code}\n  Return Code: {status_code}")
+            logger.log(f"{logger_code}", f"\n  URL : {self.request_url}\n  UUID: {self.uuid}\n  Path: {self.func_location}\n  Func: {self.at_func}\n  API : {self.ext_api_name}\n  Type: {log_type}\n  Msg : {msg}\n  External API Code: {self.ext_api_code}\n  Return Code: {status_code}")
         except ValueError as ex:
             raise ValidationError(f"Logging Failed: {ex}")
 
@@ -151,9 +149,8 @@ class FinishCall:
                     "loc":[
                         f"url: {self.request_url}",
                         f"uuid: {self.uuid}",
-                        f"user: {self.bearer_msid}",
-                        f"namespace: {self.namespace}",
-                        f"pod: {self.pod}",
+                        f"platform: {self.platform}",
+                        f"instance: {self.instance}",
                         f"path: {self.func_location}",
                         f"function: {self.at_func}",
                         f"object: {self.bad_obj_title}",
