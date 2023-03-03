@@ -5,7 +5,7 @@ ARG YOUR_ENV
 RUN apk add --no-cache build-base gcc make tzdata
 
 ENV YOUR_ENV=${YOUR_ENV} \
-    TZ America/Chicago \
+    TZ=America/Chicago \
     PYTHONFAULTHANDLER=1 \
     PYTHONUNBUFFERED=1 \
     PYTHONHASHSEED=random \
