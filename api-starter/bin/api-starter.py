@@ -1,23 +1,26 @@
 #!/usr/bin/env python3
 
-import os, sys
+import os, argparse
 from dotenv import load_dotenv
+
+parser = argparse.ArgumentParser(
+    prog='api-starter.py',
+    description='OpenAPI 3.0.2 server used for testing api routing.',
+    epilog='''---'''
+)
+parser.add_argument('-d', '--dotenv_path', type=str, required=False, help='Path to dotenv file to load. If none present runs app without like a remote deploy.')
+args = parser.parse_args()
+dotenv_path = args.dotenv_path
 
 SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
 APP_LOCATION = os.path.dirname(os.path.join(SCRIPT_PATH))
 
-if __name__ == "__main__":
-    # Local dev - argument=local - uses dotenv injected env variables
-    if len(sys.argv) == 2 and sys.argv[1] == "local":
-        BASE_LOCATION = os.path.dirname(APP_LOCATION)
-        DOTENV_PATH = f"{BASE_LOCATION}/.env/Runtime/envs/api-starter.env"
-        load_dotenv(DOTENV_PATH)
-        os.system(f"python3 {APP_LOCATION}/main.py local >&1")
-    # Server/K8S - argument=remote - uses CI injected env variables
-    elif len(sys.argv) == 2 and sys.argv[1] == "remote":
-        os.system(f"python3 {APP_LOCATION}/main.py remote >&1")
-    # Bad Arguments - too few, too many, incorrect
+def main(dotenv_path:str):
+    if not dotenv_path:
+        os.system(f"python3 {APP_LOCATION}/main.py -e remote >&1")
     else:
-        sys.exit(f"\nArguments not satisfied.\n\nArgs used:\n      {sys.argv}\n\nArgs required:\n      ['/path/to/bin/api-starter-project/api-starter/bin/api-starter.py', 'local']\n      ['/path/to/bin/api-starter-project/api-starter/bin/api-starter.py, 'remote']\n")
-else:
-    sys.exit("api-starter.py: Catchall scripting error. Something is wrong with script code.")
+        load_dotenv(dotenv_path)
+        os.system(f"python3 {APP_LOCATION}/main.py -e local >&1")
+
+if __name__ == "__main__":
+    main(dotenv_path=dotenv_path)
