@@ -1,6 +1,6 @@
-import sys, uvicorn, time
+import sys, uvicorn, time, argparse
 from config.uvicorn_config import uvi_config
-from config.api_logging import init_logging_local, init_logging_remote
+from config.api_logging import init_logging
 from config.error_messages import ErrResponse
 from routes import default_routes
 
@@ -34,25 +34,18 @@ api_starter.include_router( default_routes.favicon.router )
 api_starter.include_router( default_routes.healthcheck.router )
 api_starter.include_router( default_routes.swagger.router)
 
+# ----------------------------- RUNTIME EXECUTION ---------------------------- #
+def main():
+    server = uvicorn.Server(uvi_config)
+    init_logging()
+    
+    try:
+        server.run(); quit()
+    except RuntimeError as err:
+        sys.exit(f"main.py local: An error occurred starting server: {err}")
+
 if __name__ == "__main__":
-    if len(sys.argv) == 2 and sys.argv[1] == "local":
-        server = uvicorn.Server(uvi_config)
-        init_logging_local()
-        try:
-            server.run(); sys.exit()
-        except RuntimeError as err:
-            sys.exit(f"main.py local: An error occurred starting server: {err}")
-    elif len(sys.argv) == 2 and sys.argv[1] == "remote":
-        server = uvicorn.Server(uvi_config)
-        init_logging_remote()
-        try:
-            server.run(); sys.exit()
-        except RuntimeError as err:
-            sys.exit(f"main.py remote: An error occurred starting server: {err}")
-    else:
-        sys.exit(f"\nArguments not satisfied.\nArgs used: {sys.argv}\nArgs required: ['main.py', 'local', 'remote']\n")
-else:
-    pass
+    main()
 # ---------------------------------------------------------------------------- #
 
 # EOF
